@@ -1,0 +1,182 @@
+:root{
+  --bg1:#0b1020;
+  --bg2:#121a35;
+  --text:#f5f7ff;
+  --muted:#c8cff9;
+  --accent:#ff0000;
+  --accent-dark:#cc0000;
+  --gold:#ffcc00;
+  --panel:rgba(0,0,0,0.78);
+  --card:rgba(255,255,255,0.12);
+  --win:#1fd36a;
+  --warn:#ffae42;
+  --bad:#ff4d4d;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Trebuchet MS', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+}
+
+/* View backgrounds (Spidey images) */
+.view {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.view::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.45);
+  z-index: 0;
+}
+#hubView::before   { background-image: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.55)), url('spidey1.jpg'); }
+#guessView::before { background-image: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.55)), url('spidey1.jpg'); }
+#tttView::before   { background-image: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.55)), url('spidey2.jpg'); }
+
+.hidden { display: none !important; }
+
+/* Cards and shells */
+.hub-container, .game-shell {
+  position: relative;
+  z-index: 1;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  padding: 26px;
+  width: min(960px, 92vw);
+  text-align: center;
+}
+
+.game-shell { width: min(560px, 92vw); }
+
+.hub-title { margin: 0 0 8px; font-size: 2.2rem; color: var(--gold); text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+.hub-sub { margin: 0 0 18px; color: var(--muted); }
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 18px;
+}
+@media (max-width: 620px) { .game-grid { grid-template-columns: 1fr; } }
+
+.game-card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 12px;
+  text-align: left;
+  transition: transform .18s ease, background .2s ease, border-color .2s ease;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.game-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.18); }
+.game-card h3 { margin: 0 0 6px; }
+.game-card p { margin: 0 0 10px; color: var(--muted); }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Buttons */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  transition: background .17s ease, transform .12s ease;
+}
+.btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn.secondary { background: #565a6a; }
+.btn.secondary:hover { background: #3d4150; }
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: var(--text);
+}
+.btn.ghost:hover { border-color: #fff; }
+
+.btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
+
+/* Guess the number */
+.guess-input {
+  width: 80%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  margin: 6px 0 8px;
+  font-size: 1rem;
+}
+.guess-feedback { font-weight: 800; margin: 8px 0; }
+.guess-prev { color: var(--gold); }
+
+/* Intro overlay */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: grid; place-items: center;
+  z-index: 10;
+}
+.intro-screen {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 28px 22px;
+  border-radius: 14px;
+  text-align: center;
+  width: min(520px, 92vw);
+}
+.intro-screen h1 { margin: 0 0 8px; color: var(--gold); }
+.highlight { color: var(--accent); font-weight: 800; }
+
+/* Tic Tac Toe */
+.ttt-panel {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 10px;
+}
+.pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-weight: 700;
+}
+.pill.warn { color: var(--warn); }
+
+.ttt-board {
+  display: grid;
+  grid-template-columns: repeat(3, 110px);
+  gap: 12px;
+  justify-content: center;
+  margin: 10px auto 8px;
+}
+@media (max-width: 420px) {
+  .ttt-board { grid-template-columns: repeat(3, 90px); gap: 10px; }
+}
+.ttt-cell {
+  width: 110px; height: 110px;
+  background: rgba(15, 21, 48, 0.85);
+  border: 2px solid #2b356a;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  font-size: 2.4rem; font-weight: 900; color: #eaf0ff;
+  cursor: pointer;
+  transition: background .2s ease, transform .06s ease, border-color .2s ease;
+  text-shadow: 0 2px 6px rgba(0,0,0,.4);
+}
+.ttt-cell:hover { background: #141d43; border-color:#3a4aa3; transform: translateY(-1px); }
+.ttt-cell.win {
+  background: rgba(31, 211, 106, 0.25);
+  border-color: var(--win);
+  box-shadow: 0 0 14px rgba(31,211,106,0.6), inset 0 0 10px rgba(31,211,106,0.3);
+}
+.ttt-status { margin: 8px 0 4px; font-weight: 800; }

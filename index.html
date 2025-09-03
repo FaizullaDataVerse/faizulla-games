@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faizulla's Hub</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b1020">
+</head>
+<body>
+  <!-- HUB VIEW -->
+  <section id="hubView" class="view">
+    <div class="hub-container">
+      <h1 class="hub-title">🎮 Faizulla's Hub</h1>
+      <p class="hub-sub">Choose your game and start playing</p>
+
+      <div class="game-grid">
+        <div class="game-card">
+          <h3>🔢 Guess The Number</h3>
+          <p>Guess the secret number between 1 and 100 in 10 tries.</p>
+          <div class="actions">
+            <button class="btn" id="openGuess">Play</button>
+            <button class="btn ghost" id="openGuessIntro">Start with Intro</button>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <h3>🕹️ Tic Tac Toe — Best of 5</h3>
+          <p>5 rounds. Score more victories and get Booyah! Winner auto-starts a new match.</p>
+          <div class="actions">
+            <button class="btn" id="openTTT">Play</button>
+            <button class="btn ghost" id="openTTTReset">Reset Match & Play</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer-note">© 2025 Faizulla's Hub • Designed & Developed by Faizulla</p>
+    </div>
+  </section>
+
+  <!-- GUESS THE NUMBER VIEW -->
+  <section id="guessView" class="view hidden">
+    <div class="game-shell">
+      <h2 class="game-title">🎯 Guess The Number</h2>
+      <p class="game-subtle">Guess a number between <b>1</b> and <b>100</b></p>
+
+      <input type="number" id="guessInput" class="guess-input" placeholder="Enter your guess" min="1" max="100" />
+      <div class="btn-row">
+        <button id="guessBtn" class="btn">Guess</button>
+        <button id="restartBtn" class="btn secondary">Restart</button>
+        <button class="btn ghost" id="backFromGuess">Back to Hub</button>
+      </div>
+
+      <p id="feedback" class="guess-feedback" aria-live="polite"></p>
+      <p>Chances Left: <span id="chances">10</span></p>
+      <p id="previousGuesses" class="guess-prev">Previous Guesses: None</p>
+    </div>
+
+    <!-- Intro overlay -->
+    <div class="overlay hidden" id="introOverlay">
+      <div class="intro-screen">
+        <h1>🎮 Welcome to <span class="highlight">Guess The Number</span></h1>
+        <p>Created by <b class="highlight">Faizulla</b></p>
+        <button id="startBtn" class="btn">▶ Start Game</button>
+        <div style="margin-top:10px;">
+          <button id="skipIntro" class="btn ghost">Skip Intro</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIC TAC TOE VIEW -->
+  <section id="tttView" class="view hidden">
+    <div class="game-shell">
+      <h2 class="game-title">🕹️ Tic Tac Toe</h2>
+      <p class="game-subtle">Best of 5 rounds. Score more wins to get <span class="highlight">Booyah!</span></p>
+
+      <div class="ttt-panel">
+        <div class="pill warn" id="roundPill">Round: 1 / 5</div>
+        <div class="pill" id="turnPill">Turn: X</div>
+        <div class="pill" id="matchPill">Match: X 0 — 0 O</div>
+      </div>
+
+      <div id="tttBoard" class="ttt-board" aria-label="Tic Tac Toe board"></div>
+
+      <p id="tttStatus" class="ttt-status" aria-live="polite">Player X's turn</p>
+      <div class="btn-row">
+        <button id="tttResetRound" class="btn secondary">Reset Round</button>
+        <button id="tttResetMatch" class="btn ghost">Reset Match</button>
+        <button id="backFromTTT" class="btn">Back to Hub</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
