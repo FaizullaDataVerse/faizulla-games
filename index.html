@@ -3,33 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Faizulla's Hub</title>
+  <title>Faizulla's Hub — 4 Game Arcade</title>
   <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#0b1020">
 </head>
 <body>
+  <!-- Sound Effects -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+  <audio id="winSound" src="win.mp3" preload="auto"></audio>
+  <audio id="errorSound" src="error.mp3" preload="auto"></audio>
+
   <!-- HUB VIEW -->
   <section id="hubView" class="view">
     <div class="hub-container">
       <h1 class="hub-title">🎮 Faizulla's Hub</h1>
-      <p class="hub-sub">Choose your game and start playing</p>
+      <p class="hub-sub">Choose your game and dive in</p>
 
       <div class="game-grid">
         <div class="game-card">
           <h3>🔢 Guess The Number</h3>
-          <p>Guess the secret number between 1 and 100 in 10 tries.</p>
+          <p>Find the secret number between 1 and 100 in 10 tries.</p>
           <div class="actions">
             <button class="btn" id="openGuess">Play</button>
-            <button class="btn ghost" id="openGuessIntro">Start with Intro</button>
+            <button class="btn ghost" id="openGuessIntro">Intro</button>
           </div>
         </div>
 
         <div class="game-card">
           <h3>🕹️ Tic Tac Toe — Best of 5</h3>
-          <p>5 rounds. Score more victories and get Booyah! Winner auto-starts a new match.</p>
+          <p>Score more round wins across five to claim Booyah.</p>
           <div class="actions">
             <button class="btn" id="openTTT">Play</button>
-            <button class="btn ghost" id="openTTTReset">Reset Match & Play</button>
+            <button class="btn ghost" id="openTTTReset">Reset Match</button>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <h3>🪨📄✂️ Rock Paper Scissors</h3>
+          <p>Versus Computer or Friend. Choose target wins.</p>
+          <div class="actions">
+            <button class="btn" id="openRPS">Play</button>
+            <button class="btn ghost" id="openRPSReset">Reset Match</button>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <h3>🟦 Dots & Boxes</h3>
+          <p>Connect lines to complete boxes. Extra turn on each box.</p>
+          <div class="actions">
+            <button class="btn" id="openDots">Play</button>
+            <button class="btn ghost" id="openDotsReset">Reset</button>
+          </div>
+        </div>
+        <!-- Coin Toss -->
+        <div class="game-card">
+          <h3>🪙 Coin Toss</h3>
+          <p>Pick Heads or Tails, then flip the coin.</p>
+          <div class="actions">
+            <button class="btn" id="openToss">Play</button>
+          </div>
+        </div>
+        <div class="game-card">
+          <h3>✨ About & Credits</h3>
+          <p>Unified dark theme, responsive UI, and Spidey vibes.</p>
+          <div class="actions">
+            <button class="btn" id="openAbout">Open</button>
           </div>
         </div>
       </div>
@@ -42,29 +79,23 @@
   <section id="guessView" class="view hidden">
     <div class="game-shell">
       <h2 class="game-title">🎯 Guess The Number</h2>
-      <p class="game-subtle">Guess a number between <b>1</b> and <b>100</b></p>
-
-      <input type="number" id="guessInput" class="guess-input" placeholder="Enter your guess" min="1" max="100" />
+      <p class="game-subtle">Guess a number between <b>1</b> and <b>100</b>.</p>
+      <input type="number" id="guessInput" class="guess-input" min="1" max="100" placeholder="Enter your guess" />
       <div class="btn-row">
         <button id="guessBtn" class="btn">Guess</button>
         <button id="restartBtn" class="btn secondary">Restart</button>
-        <button class="btn ghost" id="backFromGuess">Back to Hub</button>
+        <button id="backFromGuess" class="btn ghost">Back</button>
       </div>
-
       <p id="feedback" class="guess-feedback" aria-live="polite"></p>
       <p>Chances Left: <span id="chances">10</span></p>
       <p id="previousGuesses" class="guess-prev">Previous Guesses: None</p>
     </div>
-
-    <!-- Intro overlay -->
     <div class="overlay hidden" id="introOverlay">
       <div class="intro-screen">
-        <h1>🎮 Welcome to <span class="highlight">Guess The Number</span></h1>
-        <p>Created by <b class="highlight">Faizulla</b></p>
+        <h1>🎬 Welcome to <span class="highlight">Guess The Number</span></h1>
+        <p>Try to guess the secret number in as few tries as possible.</p>
         <button id="startBtn" class="btn">▶ Start Game</button>
-        <div style="margin-top:10px;">
-          <button id="skipIntro" class="btn ghost">Skip Intro</button>
-        </div>
+        <button id="skipIntro" class="btn ghost" style="margin-top:8px;">Skip Intro</button>
       </div>
     </div>
   </section>
@@ -73,25 +104,127 @@
   <section id="tttView" class="view hidden">
     <div class="game-shell">
       <h2 class="game-title">🕹️ Tic Tac Toe</h2>
-      <p class="game-subtle">Best of 5 rounds. Score more wins to get <span class="highlight">Booyah!</span></p>
-
+      <p class="game-subtle">Best of 5 rounds. Alternate starters.</p>
       <div class="ttt-panel">
         <div class="pill warn" id="roundPill">Round: 1 / 5</div>
         <div class="pill" id="turnPill">Turn: X</div>
         <div class="pill" id="matchPill">Match: X 0 — 0 O</div>
       </div>
-
-      <div id="tttBoard" class="ttt-board" aria-label="Tic Tac Toe board"></div>
-
-      <p id="tttStatus" class="ttt-status" aria-live="polite">Player X's turn</p>
+      <div id="tttBoard" class="ttt-board"></div>
+      <p id="tttStatus" class="ttt-status">Player X's turn</p>
       <div class="btn-row">
         <button id="tttResetRound" class="btn secondary">Reset Round</button>
         <button id="tttResetMatch" class="btn ghost">Reset Match</button>
-        <button id="backFromTTT" class="btn">Back to Hub</button>
+        <button id="backFromTTT" class="btn">Back</button>
       </div>
     </div>
   </section>
 
+  <!-- ROCK PAPER SCISSORS VIEW -->
+  <section id="rpsView" class="view hidden">
+    <div class="game-shell">
+      <h2 class="game-title">🪨📄✂️ Rock Paper Scissors</h2>
+      <div class="rps-mode">
+        <label for="rpsMode"><b>Mode:</b></label>
+        <select id="rpsMode">
+          <option value="cpu">Player vs Computer</option>
+          <option value="friend">Player vs Friend</option>
+        </select>
+        <label for="rpsTarget" style="margin-left:10px;"><b>Target wins:</b></label>
+        <select id="rpsTarget">
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="7">7</option>
+        </select>
+      </div>
+      <div class="rps-buttons">
+        <button class="rps-btn" data-choice="rock">🪨</button>
+        <button class="rps-btn" data-choice="paper">📄</button>
+        <button class="rps-btn" data-choice="scissors">✂️</button>
+      </div>
+      <p id="rpsResult" class="rps-result">Make your move!</p>
+      <p id="rpsScore" class="rps-score">You: 0 — 0 :CPU</p>
+      <div class="btn-row">
+        <button id="rpsReset" class="btn secondary">Reset</button>
+        <button id="backFromRPS" class="btn ghost">Back</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOTS & BOXES VIEW -->
+  <section id="dotsView" class="view hidden">
+    <div class="game-shell">
+      <h2 class="game-title">🟦 Dots & Boxes</h2>
+      <p class="game-subtle">Connect lines to complete boxes. Extra turn on each box.</p>
+      <div class="dots-controls">
+        <label for="dotsSize"><b>Grid size:</b></label>
+        <select id="dotsSize">
+          <option value="2">2 × 2</option>
+          <option value="3" selected>3 × 3</option>
+          <option value="4">4 × 4</option>
+          <option value="5">5 × 5</option>
+        </select>
+      </div>
+            <div id="dotsBoard" class="dots-board"></div>
+
+      <p id="dotsStatus" class="dots-status" aria-live="polite">Player 1's turn</p>
+      <p id="dotsScore" class="dots-score">P1: 0 — 0 :P2</p>
+
+      <details class="rules">
+        <summary><b>How to play</b></summary>
+        <ul>
+          <li>Players take turns clicking between two adjacent dots to draw a line (horizontal or vertical).</li>
+          <li>When you complete the fourth side of a box, you claim it with your initial (A or B).</li>
+          <li>Completing a box gives you an immediate extra turn.</li>
+          <li>When no lines remain, the player with more boxes wins.</li>
+        </ul>
+      </details>
+
+      <div class="btn-row">
+        <button id="dotsReset" class="btn secondary">Reset</button>
+        <button id="backFromDots" class="btn ghost">Back</button>
+      </div>
+    </div>
+  </section>
+  <!-- COIN TOSS VIEW -->
+  <section id="tossView" class="view hidden">
+    <div class="game-shell">
+      <h2 class="game-title">🪙 Coin Toss</h2>
+      <p class="game-subtle">Will it land Heads or Tails?</p>
+
+      <div class="btn-row toss-buttons">
+        <button class="btn" id="chooseHeads">Heads 🐔</button>
+        <button class="btn" id="chooseTails">Tails 🐍</button>
+      </div>
+
+      <p id="tossResult" class="guess-feedback" aria-live="polite"></p>
+
+      <div class="btn-row">
+        <button id="tossReset" class="btn secondary">Reset</button>
+        <button id="backFromToss" class="btn ghost">Back</button>
+      </div>
+    </div>
+  </section>
+  <!-- ABOUT VIEW -->
+  <section id="aboutView" class="view hidden">
+    <div class="game-shell">
+      <h2 class="game-title">✨ About & Credits</h2>
+      <p class="game-subtle">
+        A compact arcade with a unified dark theme and six Spidey scenes:<br>
+        <b>spidey1.jpg</b> • <b>spidey2.jpg</b> • <b>spidey3.jpg</b> • <b>spidey4.jpg</b> • <b>spidey5.jpg</b> • <b>spidey6.jpg</b>
+      </p>
+      <ul style="text-align:left; margin:10px auto; max-width:560px;">
+        <li><b>Games:</b> Guess The Number • Tic Tac Toe • Rock Paper Scissors • Dots & Boxes</li>
+        <li><b>Tech:</b> HTML • CSS • JavaScript — no frameworks</li>
+        <li><b>UX:</b> Responsive design, keyboard-friendly inputs, sound effects, and clear feedback</li>
+      </ul>
+      <div class="btn-row">
+        <button id="backFromAbout" class="btn">Back to Hub</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
   <script src="script.js" defer></script>
 </body>
 </html>
